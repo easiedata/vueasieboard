@@ -1,0 +1,56 @@
+<template>
+  <div class="e-d-flex e-flex-column e-align-items-center e-justify-content-center e-w-100 e-px-1">
+    <div  class="e-d-flex e-justify-content-center">
+      <label v-if="!item_meta.label_tooltip.show" :style="$json2style(item_meta.label)"> {{ group_name }}</label>
+      <label v-else v-tooltip="item_meta.label_tooltip['v-tooltip']"  :style="$json2style(item_meta.label)"> {{ group_name }}</label>
+    </div>
+    <easie-select
+      @input="on_input" 
+      v-model="item_meta.val"  
+      v-bind="{
+        options: options, 
+        ...group_item_meta.select_bind
+      }">
+    </easie-select>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'item-select',
+    props:{
+      options:{required:true},
+      group_item_meta:{required:true},
+      group_rule:{required: true},
+      group_name:{required: true}
+    },
+    data(){
+      return {
+        item_meta: this.group_item_meta
+      }
+    },
+    mounted(){
+      this.on_input()
+    },
+    methods:{
+      on_input(){
+        let val = this.item_meta.val
+        let rule = '';
+        if(val== null){
+          rule = '';
+        }
+        else if(Array.isArray(val) && this.group_item_meta.select_bind.multiple){
+          rule = '( ' + val.map(d=>{ return d.rule }).join(' OR ') + ' )';
+        }
+        else{
+          rule = val.rule; 
+        }
+        this.$emit('new_state', {
+          rule: rule, 
+          item_meta: this.item_meta, 
+          value: this.item_meta.val
+        });
+      }
+    }
+  }
+</script>
