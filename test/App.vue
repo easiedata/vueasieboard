@@ -20,7 +20,6 @@
                   v-show="visible.component_type"
                   class="e-btn e-m-1 e-mt-2"
                   :class="btn_class[mode==cr]">
-                  <font-awesome-icon :icon="creation_data[cr].icon"></font-awesome-icon>
                   {{ creation_data[cr].label }}
                 </button>
               </div>
@@ -90,14 +89,18 @@
 
 <script>
   import { meta_settings } from '../src/components/easieboard_modals/easie_default_meta/default_meta.js';
+
+  import { chart_create_meta } from '../src/components/easieboard_items/easie_chart/meta/create_meta.js';
+  import { indicator_create_meta } from '../src/components/easieboard_items/easie_indicator/meta/create_meta.js';
+  import { select_create_meta } from '../src/components/easieboard_items/board_select/meta/create_meta.js';
+
   // import { select_group_c_order, select_group_c_data, select_group_key_ref } from './components/new_component/group_meta.js';
   import baseLayout from './components/base_layout/base_layout.vue';
-  import easieData from '../src/components/item_structure/modals/structure_modals/easiedata.vue';
-  import easieGroup from '../src/components/item_structure/modals/structure_modals/easiegroup.vue';
-  import groupOrder from '../src/components/item_structure/modals/structure_modals/group_order.vue';
+
   import easieIndicator from '../src/components/easieboard_items/easie_indicator/easie_indicator.vue';
   import easieChart from '../src/components/easieboard_items/easie_chart/easie_chart.vue';
-  import { easieAppContainer, easieAce } from 'vueasie';
+  import boardSelect from '../src/components/easieboard_items/board_select/board_select.vue';
+  
   import itemDataStructure from '../src/components/item_structure/item_data_structure.vue';
   // import new_component from './components/new_component/new_component.vue';
 
@@ -118,16 +121,11 @@
   export default {
     name: 'App',
     components: {
-      'item-data-structure': itemDataStructure,
-      'base-layout': baseLayout,
-      'easie-ace': easieAce,
-      'easie-app-container': easieAppContainer,
-      'easie-chart-component': easieChart,
-      'easie-indicator': easieIndicator,
+      itemDataStructure,
+      easieIndicator,
+      boardSelect,
+      easieChart
       // 'new-component': new_component,
-      'easiedata': easieData,
-      'easie-group': easieGroup,
-      'group-order': groupOrder
     },
     data(){
       return {
@@ -140,10 +138,6 @@
           // },
           ...meta_settings
         },
-        item_data_structure_display: false,
-        initial_data:{},
-        initial_group:{},
-        sel_group: '',
         group_list_values: {},
         group_list: [],
         item_meta: {},
@@ -160,36 +154,27 @@
           false: 'e-btn e-mr-1 e-btn-outline-secondary hover-btn-easie'
         },
         creation_order: [
-          'indicator', 'chart'
+          'indicator', 'chart', 'select'
         ],
         creation_data: {
           chart: {
-            label: 'Gráfico',
-            icon: 'chart-bar',
-            component: 'easie-chart-component',
-            div_style: 'min-height:550px; max-height:550px;',
-            values_function: (v_self, loading, call_back) => {
+            ...chart_create_meta,
+            values_function: (vm, loading, call_back) => {
               loading.hide()
               this.new_group_list_values_structure();
               call_back({error: false, data: { group_list_values: this.group_list_values}});
             }
           },
           indicator: {
-            label: 'Indicador',
-            icon: 'superscript',
-            component: 'easie-indicator',
-            div_style: '',
-            values_function: (v_self, loading, call_back) => {
+            ...indicator_create_meta,
+            values_function: (vm, loading, call_back) => {
               loading.hide()
               this.new_group_list_values_structure();
               call_back({error: false, data: { group_list_values: this.group_list_values}});
             }
-          }
+          },
+          select: { ...select_create_meta}
           // new:{
-          //   label: 'Novo',
-          //   icon: 'plus',
-          //   component: 'new-component',
-          //   div_style: '',
           //   values_function: (v_self, hide_loading, call_back) => {
           //     hide_loading()
           //     v_self.group_list_values = this.group_list_values
@@ -298,7 +283,7 @@
         });
       },
       save_component(d){
-        this.$notify({text:' Item editado com sucesso', type:'success'})
+        // this.$notify({text:' Item editado com sucesso', type:'success'})
       },
       change_item_data_mode(){
         this.$refs.dyn_component.resize()

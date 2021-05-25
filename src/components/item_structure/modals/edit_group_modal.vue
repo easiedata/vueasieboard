@@ -41,15 +41,11 @@
 <script>
   import events_meta from './events_meta/events_meta.vue';
   import easiegroup from './structure_modals/easiegroup.vue';
-  import { easieModal, easieTab, easieTopTabs, easieDefaultMeta } from 'vueasie';
+
 
   export default {
     name: 'edit_structure_modal',
     components:{
-      'easie-modal': easieModal,
-      'easie-tab':easieTab,
-      'easie-top-tabs':easieTopTabs,
-      'easie-default-meta':easieDefaultMeta,
       'easie-group': easiegroup,
       'events-meta': events_meta
     },

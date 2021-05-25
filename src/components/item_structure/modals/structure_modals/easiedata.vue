@@ -33,11 +33,10 @@
                 class="hover-text-easie e-ml-2"
                 :class="{'text-easie':(group_mode=='new' && group_options.length)}"> Novo:</label>
             </div>
-            <input
+            <easie-form-input
               @click="group_mode='new'"
               v-model="input_group"
-              class="e-w-100 e-mb-2"
-              placeholder="Nome Grupo"/>
+              placeholder="Nome Grupo"></easie-form-input>
           </div>
         </div>
       </div>
@@ -53,7 +52,7 @@
               <div class="add-data-opt">
                 <label> Nome*</label>
               </div>
-              <input v-model="data.name" class="e-w-100" placeholder="Nome Dado"/>
+              <easie-form-input v-model="data.name" placeholder="Nome Dado"></easie-form-input>
             </div>
             <div class="e-d-flex e-flex-grow e-align-items-center e-mb-1">
               <div class="add-data-opt">
@@ -132,20 +131,9 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
-
-  // structures
-  import filter_rule from 'vueasie';
-
-  // // utils
-  // import easieTbSelect from '@/components/utils/easie_select/easie_select';
 
   export default {
     name: 'easiedata',
-    components: {
-      //easieTbSelect,
-      'filter-rule': filter_rule
-    },
     props:{
       initial_data: {
         default:() => { return {
@@ -201,9 +189,6 @@
         }
         return '';
       },
-      // ...mapGetters({
-      //   'user_cat_tables': 'sel_cat_user_tables'
-      // }),
       has_table(){
         if(this.show_table_search){
           return this.user_cat_tables.length;

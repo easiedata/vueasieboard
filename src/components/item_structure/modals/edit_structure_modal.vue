@@ -22,7 +22,6 @@
 </template>
 
 <script>
-  import { easieModal, easieTab, easieTopTabs } from 'vueasie';
   import easiedata from './structure_modals/easiedata.vue';
   import group_order from './structure_modals/group_order.vue'
   import easie_advanced from './structure_modals/easie_advanced.vue'
@@ -30,9 +29,6 @@
   export default {
     name: 'edit_structure_modal',
     components:{
-      'easie-modal': easieModal,
-      'easie-tab':easieTab,
-      'easie-top-tabs':easieTopTabs,
       'easiedata': easiedata,
       'group-order': group_order,
       'easie-advanced': easie_advanced

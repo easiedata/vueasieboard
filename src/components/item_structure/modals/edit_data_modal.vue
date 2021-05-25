@@ -42,15 +42,10 @@
 <script>
   import events_meta from './events_meta/events_meta.vue';
   import easiedata from './structure_modals/easiedata.vue';
-  import { easieModal, easieTab, easieTopTabs, easieDefaultMeta } from 'vueasie';
 
   export default {
     name: 'edit_data_modal',
     components:{
-      'easie-modal': easieModal,
-      'easie-tab':easieTab,
-      'easie-top-tabs':easieTopTabs,
-      'easie-default-meta':easieDefaultMeta,
       'easiedata': easiedata,
       'events-meta': events_meta
     },

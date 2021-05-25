@@ -4,7 +4,7 @@
       <div class="easie-group-label-div">
         <label> Nome Grupo*:</label>
       </div>
-      <input v-model="name" class="form-control e-w-100"/>
+      <easie-form-input v-model="name"></easie-form-input>
     </div>
     <div v-if="show_table_search" class="e-d-flex e-align-items-center e-justify-content-center e-mb-2">
       <div class="py-2">
