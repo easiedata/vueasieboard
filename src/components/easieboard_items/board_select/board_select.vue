@@ -13,16 +13,17 @@
       </template>
     </div>
     <div v-if="edit_mode" class="e-d-flex e-justify-content-end e-mt-4">
-      <button
-        v-if="edit_mode"
+      <button 
+        v-if="edit_mode" 
         class="e-ml-2 e-btn e-btn-outline-secondary"
         @click="$emit('save_component', {
-          'component_key': component_key,
+          'component_key': component_key, 
           item_data:{
             group_list:group_list,
             item_meta: item_meta
-          }})"> Salvar
-          <font-awesome-icon icon="save"></font-awesome-icon>
+          }})"> Salvar 
+          <font-awesome-icon icon="save"
+          ></font-awesome-icon>
       </button>
     </div>
   </div>
@@ -32,6 +33,17 @@
   import  itemSelect from './item_select.vue';
 
   const default_group_meta = {
+    'icon_info':{
+      'show': false,
+      'v-tooltip':{
+        'container': 'body',
+        'show': false,
+        'placement': 'right',
+        'delay':  { 'show': 100, 'hide': 100 },
+        'trigger': 'hover',
+        'content': `<div><label>easie tooltip</label></div>`
+      }
+    },
     'label': {
       'color': '#696969',
       'font-size': '18px',
@@ -63,12 +75,12 @@
       itemSelect
     },
     props: {
+      board_state: {required: false},
+      board_filters: {required: false},
+      values_function: {required:false},
       save_item: { default: true },
       edit_mode: { default: true },
       component_key: { default: '' },
-      values_function: {
-        required:false
-      },
       value: {
         type: Object,
         default: function() {
@@ -87,7 +99,7 @@
         values: {},
         item_meta: {},
         group_list: this.value.group_list,
-        reload_select: 0,
+        reload_select: 0, 
         val: ''
       }
     },

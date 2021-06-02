@@ -44,7 +44,7 @@
 
 <script>
   import easie_echart from './map_echart.vue';
-  import easie_item_tools from '../../easieboard_modals/easie_item_tools/easie_item_tools.vue';
+  import easie_item_tools from '../../utils/easie_item_tools/easie_item_tools.vue';
   import { brazil_chart_group_ref, brazil_chart_group_ref_back, default_group_meta, default_echarts_json, default_item_meta } from './meta/meta'
 
   export default {

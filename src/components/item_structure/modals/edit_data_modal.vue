@@ -8,9 +8,9 @@
       <easie-top-tabs>
         <easie-tab key="structure" name="Estrutura" :selected="true">
           <easiedata
+            :easie_tables_cat="easie_tables_cat"
             :initial_data="initial_data"
             :initial_group="initial_group"
-            :show_table_search="show_table_search"
             @new_data="emit_new_data" :group_options="group_options"></easiedata>
         </easie-tab>
         <template
@@ -28,9 +28,10 @@
             </easie-default-meta>
           </easie-tab>
         </template>
-        <easie-tab key="events" name="Ao Clicar" v-if="show_events_tab">
+        <easie-tab key="events" name="Ao Clicar">
           <events-meta
             @new_event="new_event"
+            :easie_tables_cat="easie_tables_cat"
             :events_meta="initial_data.events">
           </events-meta>
         </easie-tab>
@@ -42,25 +43,21 @@
 <script>
   import events_meta from './events_meta/events_meta.vue';
   import easiedata from './structure_modals/easiedata.vue';
-  import { easieModal, easieTab, easieTopTabs, easieDefaultMeta } from 'vueasie';
+  import easie_default_meta from '../../utils/easie_default_meta/easie_default_meta.vue';
 
   export default {
     name: 'edit_data_modal',
     components:{
-      'easie-modal': easieModal,
-      'easie-tab':easieTab,
-      'easie-top-tabs':easieTopTabs,
-      'easie-default-meta':easieDefaultMeta,
       'easiedata': easiedata,
+      'easie-default-meta': easie_default_meta,
       'events-meta': events_meta
     },
     props:{
+      easie_tables_cat:{required:true},
       data_meta:{required:true},
       initial_data:{required: true},
       initial_group:{required:true},
-      group_list:{required:true},
-      show_events_tab:{default:false},
-      show_table_search:{default:false}
+      group_list:{required:true}
     },
     computed:{
       group_options(){

@@ -43,7 +43,7 @@
 
   import { default_group_meta, default_data_meta, default_item_meta } from './meta/meta'
   import indicator from './indicator.vue';
-  import easieItemTools from '../../easieboard_modals/easie_item_tools/easie_item_tools.vue';
+  import easieItemTools from '../../utils/easie_item_tools/easie_item_tools.vue';
 
   export default {
     name: 'easie-indicator',

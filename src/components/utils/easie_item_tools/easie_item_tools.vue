@@ -36,7 +36,7 @@
     export default {
       name: 'easie-item-tools',
       components: {
-        'easie-default-meta': easieDefaultMeta,
+        easieDefaultMeta,
         'easie-modal': easieModal,
         'easie-tab': easieTab,
         'easie-top-tabs': easieTopTabs

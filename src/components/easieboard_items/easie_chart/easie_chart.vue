@@ -341,7 +341,8 @@
         let data_index = data_options.indexOf(data['data'])
         let data_event = this.group_list[group_index].data_list[data_index].events;
         if('click' in data_event){
-          if(data_event['click'].length){
+          let content_name = this.$get_json_key(['click', 'content_name'], data_event, '');
+          if(content_name.length){
             let rules = [];
             let group = this.group_list[group_index];
             if(group.rule.length){
@@ -352,30 +353,24 @@
               rules.push(data.rule);
             }
             let rule = rules.join(' AND ');
-            let emit_data = {
-              'type': 'show_board',
-              data: {
-                board_name: data_event['click'],
-                apply_rule: rule,
-                title: [data_event['click'], group.name, data.name].join(' ')
-
-              }
-            }
-            this.trigger_event(emit_data);
+            this.trigger_event({
+              'index_map': [group_index, data_index],
+              'event': event['click'],
+              'apply_rule': rule
+            });
             return;
           }
         }
         let group_event = this.group_list[group_index].events;
+        
         if('click' in group_event){
-          if(group_event['click'].length){
+          let content_name = this.$get_json_key(['click', 'content_name'], group_event, '');
+          if(content_name.length){
             let group = this.group_list[group_index];
             this.trigger_event({
-              'type': 'show_board',
-              data: {
-                board_name: group_event['click'],
-                apply_rule: group.rule,
-                title: [group_event['click'], group.name].join(' ')
-              }
+                'index_map': [group_index],
+                'event': group_event['click'],
+                'apply_rule': group.rule
             })
             return;
           }
