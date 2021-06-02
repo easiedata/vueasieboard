@@ -33,6 +33,17 @@
   import  itemSelect from './item_select.vue';
 
   const default_group_meta = {
+    'icon_info':{
+      'show': false,
+      'v-tooltip':{
+        'container': 'body',
+        'show': false,
+        'placement': 'right',
+        'delay':  { 'show': 100, 'hide': 100 },
+        'trigger': 'hover',
+        'content': `<div><label>easie tooltip</label></div>`
+      }
+    },
     'label': {
       'color': '#696969',
       'font-size': '18px',

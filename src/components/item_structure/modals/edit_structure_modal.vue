@@ -7,7 +7,7 @@
     <div>
       <easie-top-tabs>
         <easie-tab name="Adicionar Dado" :selected="true">
-          <easiedata @new_data="emit_new_data" :group_options="group_options"></easiedata >
+          <easiedata @new_data="emit_new_data" :easie_tables_cat="easie_tables_cat" :group_options="group_options"></easiedata >
         </easie-tab>
         <easie-tab v-if="group_list.length" name="Grupos">
           <group-order @new_group_order="new_group_order" :group_list="group_list"></group-order>
@@ -23,8 +23,9 @@
 
 <script>
   import easiedata from './structure_modals/easiedata.vue';
-  import group_order from './structure_modals/group_order.vue'
-  import easie_advanced from './structure_modals/easie_advanced.vue'
+  import group_order from './structure_modals/group_order.vue';
+  import easie_advanced from './structure_modals/easie_advanced.vue';
+  
 
   export default {
     name: 'edit_structure_modal',
@@ -34,6 +35,7 @@
       'easie-advanced': easie_advanced
     },
     props:{
+      easie_tables_cat:{required:true},
       group_list:{required:true}
     },
     data(){

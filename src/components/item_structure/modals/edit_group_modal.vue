@@ -7,8 +7,10 @@
     <div>
       <easie-top-tabs>
         <easie-tab key="structure" name="Estrutura" :selected="true">
-          <easie-group @new_group="emit_new_group" :initial_group="initial_group"
-          :show_table_search="show_table_search">
+          <easie-group @new_group="emit_new_group" 
+            :initial_group="initial_group"
+            :easie_tables_cat="easie_tables_cat"
+            >
           </easie-group>
         </easie-tab>
         <template v-for="(c_order, name, index) in group_meta['c_order']" >
@@ -26,9 +28,10 @@
             </easie-default-meta>
           </easie-tab>
         </template>
-        <easie-tab key="events" name="Ao Clicar" v-if="show_events_tab">
+        <easie-tab key="events" name="Ao Clicar">
           <events-meta
             @new_event="new_event"
+            :easie_tables_cat="easie_tables_cat"
             :events_meta="initial_group.events"
             el_type="group">
           </events-meta>
@@ -41,19 +44,20 @@
 <script>
   import events_meta from './events_meta/events_meta.vue';
   import easiegroup from './structure_modals/easiegroup.vue';
+  import easie_default_meta from '../../utils/easie_default_meta/easie_default_meta.vue';
 
 
   export default {
     name: 'edit_structure_modal',
     components:{
       'easie-group': easiegroup,
-      'events-meta': events_meta
+      'events-meta': events_meta,
+      'easie-default-meta': easie_default_meta
     },
     props:{
       initial_group:{required:true},
-      show_events_tab:{default:false},
       group_meta:{required:true},
-      show_table_search:{default:false}
+      easie_tables_cat:{required:true}
     },
     methods:{
       new_item_meta(d){

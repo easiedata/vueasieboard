@@ -2,35 +2,31 @@
   <div class="e-d-flex e-flex-column e-py-3 e-ml-2">
     <div class="e-d-flex e-align-items-center e-mb-2">
       <div class="easie-group-label-div">
-        <label> Nome Grupo*:</label>
+        <label> Grupo*</label>
       </div>
       <easie-form-input v-model="name"></easie-form-input>
     </div>
-    <div v-if="show_table_search" class="e-d-flex e-align-items-center e-justify-content-center e-mb-2">
-      <div class="py-2">
-        <easie-switch v-model="get_from_tb">
-          Definir Regra Padrão
-        </easie-switch>
+    <div class="e-w-100 e-py-3">
+      <easie-switch class="e-justify-content-center" v-model="get_from_tb"> Filtrar</easie-switch>
+    </div>
+    <div v-if="get_from_tb&&easie_tables_cat.length" class="e-d-flex e-align-items-center e-justify-content-center e-w-100 e-pb-3">
+      <label class="e-mr-2"> Tabela: </label>
+      <easie-tree-select class="e-w-50" v-model="table_source" :options="easie_tables_cat">
+      </easie-tree-select>
+    </div>
+    <div class="e-w-100 e-pb-3 e-ml-2" v-if="get_from_tb&&easie_tables_cat.length">
+      <div class="e-d-flex e-align-items-center e-justify-content-center">
+        <label class="e-mr-2"> Filtro* </label>
+        <easie-ace v-model="rule"
+          @init="init"
+          lang="sql"
+          class="easie-editor-wrapper"
+          height="60px"
+          width="100%"/>
       </div>
     </div>
-    <div v-if="get_from_tb && show_table_search" class="e-d-flex e-align-items-center e-mb-2">
-      <div class="easie-group-label-div">
-        <label> Tabela: </label>
-      </div>
-<!--       <easie-tb-select
-       class="w-100"
-       v-model="table_source"
-       :search="true"
-       :options="user_cat_tables"
-       :category_ref="{ cat_key: 'name', list_key: 'content' }"></easie-tb-select> -->
-    </div>
-    <div v-if="get_from_tb && show_table_search"  class="e-d-flex e-align-items-center e-mt-4 e-mb-2">
-      <div class="easie-group-label-div">
-        <label> Filtro:</label>
-      </div>
-      <div>
-        <filter-rule v-model="rule" :table_name="table_source"></filter-rule>
-      </div>
+    <div class="e-d-flex e-justify-content-center e-w-100 e-pb-3" v-if="get_from_tb&&!easie_tables_cat.length">
+      <label class=""> Para filtrar necessário ter acesso a tabelas no easiedata</label>
     </div>
     <div class="e-d-flex e-align-items-center e-justify-content-center e-mt-4 e-mb-2">
       <button
@@ -47,19 +43,15 @@
 <script>
   import { mapGetters } from 'vuex';
   // structures
-  import filter_rule from 'vueasie';
+
   // // utils
   // import easieTbSelect from '@/components/utils/easie_select/easie_select';
 
   export default {
     name: 'easieGroup',
-    components: {
-      // easieTbSelect,
-      'filter-rule': filter_rule
-    },
     props:{
       initial_group: {required:true},
-      show_table_search: {default:false}
+      easie_tables_cat: {required:true}
     },
     data(){
       return {
@@ -70,16 +62,19 @@
         item_meta: this.initial_group.item_meta
       }
     },
-    computed:{
-      // ...mapGetters({
-      //   'user_cat_tables': 'sel_cat_user_tables'
-      // }),
-    },
     methods:{
+      init(editor) {
+        editor.renderer.setScrollMargin(3, 0);
+        editor.setOptions({
+          printMargin: true,
+          wrap: true,
+          scrollPastEnd: 0.5,
+        });
+      },
       emit_group(){
         if(this.name){
           let table_source = this.table_source;
-          if(!this.get_from_tb || !this.show_table_search){
+          if(!this.get_from_tb || !this.easie_tables_cat.length){
             table_source = '';
           }
           this.$emit('new_group', {
@@ -98,13 +93,8 @@
     },
     watch:{
       get_from_tb(){
-        if(this.get_from_tb){
-          if(!this.table_source){
-            // this.table_source = this.user_cat_tables[0].content[0].val;
-          }
-        }
-        else {
-          this.table_source = '';
+        if(this.table_source=='' && this.easie_tables_cat.length){
+          this.table_source = this.easie_tables_cat[0].children[0].id;
         }
       }
     }

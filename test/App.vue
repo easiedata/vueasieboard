@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app-vue">
     <template>
-      <base-layout/>
+
       <easie-app-container>
         <template slot="title">
           <label class="e-mr-1">
@@ -59,6 +59,7 @@
                   v-model="group_list"
                   ref="item_data_structure"
                   @change_mode="change_item_data_mode"
+                  :easie_tables_cat="easie_tables_cat"
                   :show_opts="false"
                   :meta_settings="meta_settings[mode]">
                 </item-data-structure>
@@ -88,14 +89,14 @@
 </template>
 
 <script>
-  import { meta_settings } from '../src/components/easieboard_modals/easie_default_meta/default_meta.js';
+  import { meta_settings } from '../src/components/utils/easie_default_meta/default_meta.js';
 
   import { chart_create_meta } from '../src/components/easieboard_items/easie_chart/meta/create_meta.js';
   import { indicator_create_meta } from '../src/components/easieboard_items/easie_indicator/meta/create_meta.js';
   import { select_create_meta } from '../src/components/easieboard_items/board_select/meta/create_meta.js';
 
   // import { select_group_c_order, select_group_c_data, select_group_key_ref } from './components/new_component/group_meta.js';
-  import baseLayout from './components/base_layout/base_layout.vue';
+
 
   import easieIndicator from '../src/components/easieboard_items/easie_indicator/easie_indicator.vue';
   import easieChart from '../src/components/easieboard_items/easie_chart/easie_chart.vue';
@@ -130,7 +131,9 @@
     data(){
       return {
         component_key: 0,
+        easie_tables_cat:[{id: 'Folder', label: 'Folder', children: [{id: 'test @demo',label: 'test @demo'}]}],
         meta_settings: {
+
           // new: {
           //   group:{ c_data: select_group_c_data, c_order: select_group_c_order, key_ref: select_group_key_ref},
           //   data: { c_data: {}, c_order: {}, key_ref: {}},

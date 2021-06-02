@@ -3,6 +3,10 @@
     <div  class="e-d-flex e-justify-content-center">
       <label v-if="!item_meta.label_tooltip.show" :style="$json2style(item_meta.label)"> {{ group_name }}</label>
       <label v-else v-tooltip="item_meta.label_tooltip['v-tooltip']"  :style="$json2style(item_meta.label)"> {{ group_name }}</label>
+      <span v-if="item_meta.icon_info.show">
+        <label v-tooltip="item_meta.icon_info['v-tooltip']" class="hover-text-easie e-pl-1"> <font-awesome-icon :icon="['fas', 'info-circle']"></font-awesome-icon></label>
+      </span>
+      
     </div>
     <easie-select
       @input="on_input" 

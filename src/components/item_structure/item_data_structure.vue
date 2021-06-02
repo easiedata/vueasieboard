@@ -82,6 +82,7 @@
       <edit-structure-modal
         v-if="show_modal.edit_structure"
         :group_list="group_list"
+        :easie_tables_cat="easie_tables_cat"
         @new_data="new_data"
         @new_group_order="new_group_order"
         @new_group_list="new_group_list"
@@ -90,12 +91,11 @@
       <edit-data-modal
         v-if="show_modal.edit_data"
         :key="sel_group + '_' +initial_data.name"
+        :easie_tables_cat="easie_tables_cat"
         :data_meta="meta_settings.data"
         :initial_group="sel_group"
         :initial_data="initial_data"
         :group_list="group_list"
-        :show_events_tab="show_events_modal"
-        :show_table_search="show_table_search"
         @new_event="new_event"
         @new_data="new_data"
         @close="show_modal.edit_data=false"
@@ -103,10 +103,9 @@
       </edit-data-modal>
       <edit-group-modal
         v-if="show_modal.edit_group"
+        :easie_tables_cat="easie_tables_cat"
         :group_meta="meta_settings.group"
         :initial_group="initial_group"
-        :show_events_tab="show_events_modal"
-        :show_table_search="show_table_search"
         @new_item_meta="new_group_item_meta"
         @new_event="new_event"
         @new_group="new_group"
@@ -117,7 +116,6 @@
 </template>
 
 <script>
-  import { easieSelect, tooltipLabel } from 'vueasie';
   import draggable from 'vuedraggable';
   // self
   import editDataModal from './modals/edit_data_modal.vue';
@@ -131,16 +129,15 @@
       'edit-data-modal': editDataModal,
       'edit-group-modal': editGroupModal,
       'edit-structure-modal': editStructureModal,
-      'easie-select': easieSelect,
-      'tooltip-label': tooltipLabel,
       'draggable': draggable,
     },
     props:{
-      show_events_modal:{default:false},
+      easie_tables_cat:{
+        default: () => { return [] }
+      },
       value:{required:true},
       meta_settings:{required:true},
-      show_opts:{default:true},
-      show_table_search:{default:false}
+      show_opts:{default:true}
     },
     data(){
       return {
