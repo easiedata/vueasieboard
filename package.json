@@ -1,6 +1,6 @@
 {
   "name": "vueasieboard",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "dist/easieboard.umd.js",
   "module": "dist/easieboard.esm.js",
   "unpkg": "dist/easieboard.min.js",
@@ -20,7 +20,7 @@
     "echarts": "^5.1.1",
     "vue": "^2.6.11",
     "vue-loading-overlay": "^3.4.2",
-    "vueasie": "file:../vueasie/vueasie-1.0.14.tgz",
+    "vueasie": "file:../vueasie/vueasie-1.0.15.tgz",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
