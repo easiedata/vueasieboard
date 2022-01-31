@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import { easieAce, easieHr } from 'vueasie'
+
 
 
   const default_code = `this.new_group_list = this.group_list.map(g => {
@@ -40,10 +40,6 @@
 
   export default {
     name: 'easie-advanced',
-    components:{
-      easieAce,
-      easieHr
-    },
     props: {
       group_list: {required:true}
     },

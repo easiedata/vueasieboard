@@ -95,13 +95,13 @@
   import { indicator_create_meta } from '../src/components/easieboard_items/easie_indicator/meta/create_meta.js';
   import { select_create_meta } from '../src/components/easieboard_items/board_select/meta/create_meta.js';
 
-  // import { select_group_c_order, select_group_c_data, select_group_key_ref } from './components/new_component/group_meta.js';
-
+  import { tree_select_create_meta } from '../src/components/easieboard_items/board_tree_select/meta/create_meta.js';
 
   import easieIndicator from '../src/components/easieboard_items/easie_indicator/easie_indicator.vue';
   import easieChart from '../src/components/easieboard_items/easie_chart/easie_chart.vue';
   import boardSelect from '../src/components/easieboard_items/board_select/board_select.vue';
-  
+  import boardTreeSelect from '../src/components/easieboard_items/board_tree_select/board_tree_select.vue';
+
   import itemDataStructure from '../src/components/item_structure/item_data_structure.vue';
   // import new_component from './components/new_component/new_component.vue';
 
@@ -125,7 +125,8 @@
       itemDataStructure,
       easieIndicator,
       boardSelect,
-      easieChart
+      easieChart,
+      boardTreeSelect
       // 'new-component': new_component,
     },
     data(){
@@ -133,12 +134,6 @@
         component_key: 0,
         easie_tables_cat:[{id: 'Folder', label: 'Folder', children: [{id: 'test @demo',label: 'test @demo'}]}],
         meta_settings: {
-
-          // new: {
-          //   group:{ c_data: select_group_c_data, c_order: select_group_c_order, key_ref: select_group_key_ref},
-          //   data: { c_data: {}, c_order: {}, key_ref: {}},
-          //   item_meta:{c_data: {}, c_order: {}, key_ref: {}}
-          // },
           ...meta_settings
         },
         group_list_values: {},
@@ -157,7 +152,7 @@
           false: 'e-btn e-mr-1 e-btn-outline-secondary hover-btn-easie'
         },
         creation_order: [
-          'indicator', 'chart', 'select'
+          'indicator', 'chart', 'select', 'tree_select'
         ],
         creation_data: {
           chart: {
@@ -176,14 +171,8 @@
               call_back({error: false, data: { group_list_values: this.group_list_values}});
             }
           },
-          select: { ...select_create_meta}
-          // new:{
-          //   values_function: (v_self, hide_loading, call_back) => {
-          //     hide_loading()
-          //     v_self.group_list_values = this.group_list_values
-          //     call_back()
-          //   }
-          // }
+          select: { ...select_create_meta},
+          tree_select: {...tree_select_create_meta }
         }
       }
     },
@@ -197,6 +186,7 @@
             this.component_key++;
             this.$nextTick(() => {
               setTimeout(() => {
+                this.component_key++;
                 this.$refs.dyn_component.reload();
               }, 1000);
             });

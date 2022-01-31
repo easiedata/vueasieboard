@@ -45,7 +45,6 @@
   // structures
 
   // // utils
-  // import easieTbSelect from '@/components/utils/easie_select/easie_select';
 
   export default {
     name: 'easieGroup',

@@ -5,11 +5,10 @@ import {indicator_c_order, indicator_c_data, indicator_key_ref} from '../../easi
 import {chart_data_c_order, chart_data_c_data, chart_data_key_ref} from '../../easieboard_items/easie_chart/meta/data_meta';
 import {chart_c_order, chart_c_data, chart_key_ref} from '../../easieboard_items/easie_chart/meta/chart_meta';
 
-import {map_c_order, map_c_data, map_key_ref} from '../../easieboard_items/easie_map/meta/map_meta';
-
-import {slider_c_order, slider_c_data, slider_key_ref} from '../../easieboard_items/board_slider/meta/slider_meta';
 
 import {select_group_c_order, select_group_c_data, select_group_key_ref} from '../../easieboard_items/board_select/meta/group_meta';
+
+import {tree_select_group_c_order, tree_select_group_c_data, tree_select_group_key_ref} from '../../easieboard_items/board_tree_select/meta/group_meta';
 
 
 export const meta_settings = {
@@ -29,35 +28,24 @@ export const meta_settings = {
     'item_meta':{ 'c_order': chart_c_order, 'c_data': chart_c_data, 'key_ref': chart_key_ref
     }
   },
-  'map': {
-    'data':{ 'c_order': [], 'c_data': {}
-    },
-    'group':{ 'c_order': [], 'c_data': {}
-    },
-    'item_meta': {'c_order': map_c_order, 'c_data': map_c_data, 'key_ref': map_key_ref}
-  },
-  'slider': {
-    'data':{ 'c_order': [], 'c_data': {}
-    },
-    'group':{ 'c_order': [], 'c_data': {}
-    },
-    'item_meta': {'c_order': map_c_order, 'c_data': map_c_data, 'key_ref': map_key_ref}
-  },
   'select': {
     'group':{
       'c_data': select_group_c_data,
       'c_order': select_group_c_order,
       'key_ref': select_group_key_ref
     },
-    'data': {
-      'c_data': {},
-      'c_order': {},
-      'key_ref': {}
+    'data': {'c_data': {}, 'c_order': {}, 'key_ref': {}
     },
-    'item_meta':{
-      'c_data': {},
-      'c_order': {},
-      'key_ref': {}
-    }
+    'item_meta':{'c_data': {}, 'c_order': {},'key_ref': {}}
+  },
+  'tree_select': {
+    'group':{
+      'c_data': tree_select_group_c_data,
+      'c_order': tree_select_group_c_order,
+      'key_ref': tree_select_group_key_ref
+    },
+    'data': {'c_data': {}, 'c_order': {}, 'key_ref': {}
+    },
+    'item_meta':{'c_data': {}, 'c_order': {},'key_ref': {}}
   }
 }

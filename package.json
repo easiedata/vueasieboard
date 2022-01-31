@@ -20,7 +20,7 @@
     "echarts": "^5.1.1",
     "vue": "^2.6.11",
     "vue-loading-overlay": "^3.4.2",
-    "vueasie": "^1.0.16",
+    "vueasie": "file:../vueasie/vueasie-1.0.15.tgz",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
