@@ -40,13 +40,11 @@
 
 <script>
   import draggable from 'vuedraggable';
-  import { tooltipLabel } from 'vueasie';
 
   export default {
     name: 'group_order',
     components:{
       'draggable': draggable,
-      'tooltip-label': tooltipLabel
     },
     props:{
       group_list:{required:true}

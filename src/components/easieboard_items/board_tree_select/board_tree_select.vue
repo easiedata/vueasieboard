@@ -1,15 +1,16 @@
 <template>
   <div>
     <div v-if="init_components" class="e-d-flex">
-      <template  v-for="(group, i) in group_list" >
-        <item-select
+      <template  v-for="(group, i) in group_list">
+        <item-tree-select
           @new_state="new_state({...$event, index:i})"
           :group_item_meta="group.item_meta"
           :group_rule="group.rule"
           :group_name="group.name"
-          :options="group.data_list.map(d=> {return {value: d.name, label:d.name, rule:d.rule}})"
+          :options="tree_select_options[group.name]"
+          :rule_ref="rule_ref[group.name]"
           :key="group.name+'_'+reload_select">
-        </item-select>
+        </item-tree-select>
       </template>
     </div>
     <div v-if="edit_mode" class="e-d-flex e-justify-content-end e-mt-4">
@@ -22,17 +23,15 @@
             group_list:group_list,
             item_meta: item_meta
           }})"> Salvar
-          <font-awesome-icon icon="save"
-          ></font-awesome-icon>
+          <font-awesome-icon icon="save"></font-awesome-icon>
       </button>
     </div>
   </div>
 </template>
 
 <script>
-  import itemSelect from './item_select.vue';
-
-  const default_group_meta = {
+  import itemTreeSelect from './item_tree_select.vue';
+    const default_group_meta = {
     'icon_info':{
       'show': false,
       'v-tooltip':{
@@ -70,9 +69,9 @@
   }
 
   export default {
-    name: 'board-select',
+    name: 'board-tree-select',
     components:{
-      itemSelect
+      itemTreeSelect
     },
     props: {
       board_state: {required: false},
@@ -100,27 +99,42 @@
         item_meta: {},
         group_list: this.value.group_list,
         reload_select: 0,
-        val: ''
+        val: '',
+        tree_select_options: [],
+        rule_ref: {}
       }
     },
     mounted(){
       this.init();
     },
     methods:{
+      get_opts(){
+        let opts = {}
+        let opts_ref = {}
+        this.group_list.map(g =>{
+          opts_ref[g.name] = {}
+          opts[g.name] = [{
+            'id': g.name, 'label': g.name, 'children': g.data_list.map(d => {
+              opts_ref[g.name][d.name] = d.rule;
+              return {'id': d.name, 'label': d.name}
+            })
+          }]
+        })
+        this.tree_select_options = opts;
+        this.rule_ref = opts_ref;
+      },
       init(){
         this.group_list = this.value.group_list;
+        this.get_opts()
         if(this.group_list.length){
           this.load_group_list_defaults()
+          let component_js = this.$get_json_key(['component_js'], this.value, null);
+          if(component_js != null){
+            component_js = new Function(component_js)();
+            component_js(this, () => {})
+          }
           this.reload_select ++;
         }
-      },
-      load_group_list_defaults(){
-        this.group_list = this.group_list.map(group =>{
-          group['item_meta'] = this.$recursive_merge(group['item_meta'], {...default_group_meta});
-          return group
-        });
-        this.$emit('upd_group_list', this.group_list);
-        this.init_components = true;
       },
       resize(){},
       reload(){
@@ -140,7 +154,15 @@
           rule: Object.values(this.rules).join(' AND '),
           component_key: this.component_key
         })
-      }
+      },
+      load_group_list_defaults(){
+        this.group_list = this.group_list.map(group =>{
+          group['item_meta'] = this.$recursive_merge(group['item_meta'], {...default_group_meta});
+          return group
+        });
+        this.$emit('upd_group_list', this.group_list);
+        this.init_components = true;
+      },
     }
   }
 </script>

@@ -118,11 +118,9 @@
 </template>
 
 <script>
-  import { easieTreeSelect } from 'vueasie';
 
   export default {
     name: 'easiedata',
-    components:{easieTreeSelect},
     props:{
       easie_tables_cat:{required:true},
       initial_data: {

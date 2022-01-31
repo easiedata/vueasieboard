@@ -57,20 +57,8 @@
 
 <script>
 
-  import { easieAce, easieTextarea, easieSketchColor, easieFormInput, easieRadioList, easieSwitch, easieSelect, easieHr } from 'vueasie';
-
   export default {
     name: 'easie-default-meta',
-    components: {
-      'easie-ace': easieAce,
-      'easie-textarea': easieTextarea,
-      'easie-sketch-color': easieSketchColor,
-      'easie-form-input':easieFormInput,
-      'easie-radio-list':easieRadioList,
-      'easie-switch': easieSwitch,
-      'easie-select': easieSelect,
-      'easie-hr': easieHr
-    },
     props:{
       meta_key:{required:true},
       item_meta:{required:true},
