@@ -12,26 +12,23 @@
       :echarts_json="echarts_json"
       :upd_chart_size="upd_chart_size"
     />
-    <div>
-      <viny-menu-tools
-        v-show="edit_mode"
-        ref="c_menu_tools"
-        @save_chart="
-          $emit('save_component', {
-            component_key: component_key,
-            item_data: {
-              group_list: group_list,
-              item_meta: item_meta,
-              filter_list: {},
-            },
-          })
-        "
-        @input="get_group_list_values"
-        v-model="item_meta"
-        :save_chart="save_item"
-      >
-      </viny-menu-tools>
-    </div>
+    <viny-menu-tools
+      v-show="edit_mode"
+      ref="c_menu_tools"
+      @save_chart="
+        $emit('save_component', {
+          component_key: component_key,
+          item_data: {
+            group_list: group_list,
+            item_meta: item_meta,
+            filter_list: {},
+          },
+        })
+      "
+      @input="get_group_list_values"
+      v-model="item_meta"
+      :save_chart="save_item"
+    />
   </div>
 </template>
 
@@ -146,7 +143,8 @@ export default {
     mount_echarts_json() {
       this.echarts_json = { ...default_echarts_json, ...this.item_meta.extra };
 
-      this.insert_groups_to_echart_json();
+      const [idx_groups, idx_subgroups] = this.split_idx_groups_subgroups();
+      this.insert_groups_to_echart_json(idx_groups, idx_subgroups);
 
       this.echarts_json['title'] = {
         text: this.item_meta['chart_title'],
@@ -193,9 +191,8 @@ export default {
         ...this.item_meta.extra,
       };
     },
-    insert_groups_to_echart_json() {
+    insert_groups_to_echart_json(idx_groups, idx_subgroups) {
       this.echarts_json['series'] = [];
-      const [idx_groups, idx_subgroups] = this.split_idx_groups_subgroups();
 
       for (const subgroup in idx_subgroups) {
         const data_name = idx_subgroups[subgroup];
@@ -205,8 +202,9 @@ export default {
           stack: this.item_meta['stack'],
           type: this.item_meta['chart_type'],
         };
+        let group_name = '';
         for (const group in idx_groups) {
-          const group_name = idx_groups[group];
+          group_name = idx_groups[group];
           const value_data = this.group_list_values[group_name][data_name];
           const item_group = {
             name: group_name,
@@ -283,55 +281,58 @@ export default {
       const data_options = this.group_list[group_index].data_list.map(
         data => data.name
       );
-      const data_index = data_options.indexOf(data['data']);
 
+      const data_index = data_options.indexOf(data['data']);
       const data_event = this.group_list[group_index].data_list[data_index].events;
       if ('click' in data_event) {
-        const content_name = this.$get_json_key(
-          ['click', 'content_name'],
-          data_event,
-          ''
-        );
-        if (content_name.length) {
-          const rules = [];
-          const group = this.group_list[group_index];
-          if (group.rule.length) {
-            rules.push(group.rule);
-          }
-          const data = this.group_list[group_index].data_list[data_index];
-          if (data.rule.length) {
-            rules.push(data.rule);
-          }
-          const rule = rules.join(' AND ');
-          this.trigger_event({
-            index_map: [group_index, data_index],
-            event: event['click'],
-            apply_rule: rule,
-          });
-          return;
-        }
+        this.trigger_data_event(data_index, data_event);
+        return;
       }
 
       const group_event = this.group_list[group_index].events;
       if ('click' in group_event) {
-        const content_name = this.$get_json_key(
-          ['click', 'content_name'],
-          group_event,
-          ''
-        );
-        if (content_name.length) {
-          let group = this.group_list[group_index];
-          this.trigger_event({
-            index_map: [group_index],
-            event: group_event['click'],
-            apply_rule: group.rule,
-          });
-          return;
-        }
+        this.trigger_group_event(group_index, group_event);
+        return;
       }
     },
-    trigger_event(data) {
-      this.$emit('trigger_event', data);
+    trigger_data_event(data_index, data_event) {
+      const content_name = this.$get_json_key(
+        ['click', 'content_name'],
+        data_event,
+        ''
+      );
+      if (content_name.length) {
+        const rules = [];
+        const group = this.group_list[group_index];
+        if (group.rule.length) {
+          rules.push(group.rule);
+        }
+        const data = this.group_list[group_index].data_list[data_index];
+        if (data.rule.length) {
+          rules.push(data.rule);
+        }
+        const rule = rules.join(' AND ');
+        this.$emit('trigger_event', {
+          index_map: [group_index, data_index],
+          event: event['click'],
+          apply_rule: rule,
+        });
+      }
+    },
+    trigger_group_event(group_index, group_event) {
+      const content_name = this.$get_json_key(
+        ['click', 'content_name'],
+        group_event,
+        ''
+      );
+      if (content_name.length) {
+        let group = this.group_list[group_index];
+        this.$emit('trigger_event', {
+          index_map: [group_index],
+          event: group_event['click'],
+          apply_rule: group.rule,
+        });
+      }
     },
     resize() {
       this.upd_chart_size++;

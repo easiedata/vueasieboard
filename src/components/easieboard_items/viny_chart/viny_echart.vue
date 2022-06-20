@@ -22,10 +22,8 @@ export default {
       echarts.registerMap('map', this.geo_json_map, {});
     }
 
-    console.log(this.echarts_json);
     this.myChart.setOption(this.echarts_json);
     this.myChart.on('click', params => {
-      console.log(params);
       if (params.seriesType == 'pie') {
         let group = params.seriesName;
         let data = params.name;

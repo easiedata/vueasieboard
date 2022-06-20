@@ -28,6 +28,14 @@ export const meta_settings = {
     'item_meta':{ 'c_order': chart_c_order, 'c_data': chart_c_data, 'key_ref': chart_key_ref
     }
   },
+  'viny_chart': {
+    'data':{ 'c_order': chart_data_c_order, 'c_data': chart_data_c_data, 'key_ref': chart_data_key_ref
+    },
+    'group':{ 'c_order': [], 'c_data': {}, 'key_ref': []
+    },
+    'item_meta':{ 'c_order': chart_c_order, 'c_data': chart_c_data, 'key_ref': chart_key_ref
+    }
+  },
   'select': {
     'group':{
       'c_data': select_group_c_data,

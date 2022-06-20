@@ -18,7 +18,7 @@
                 'e-btn-outline-easie': chart_meta.chart_type == chart,
               }"
             >
-              <font-awesome-icon :icon="'chart-' + chart"></font-awesome-icon>
+              <font-awesome-icon :icon="'chart-' + chart" />
             </button>
           </div>
         </div>
@@ -29,14 +29,14 @@
               @click="disp_ref.easie_tools_modal = true"
               class="e-btn e-btn-outline-secondary"
             >
-              <font-awesome-icon icon="wrench"></font-awesome-icon>
+              <font-awesome-icon icon="wrench" />
             </button>
             <button
               v-show="save_chart"
               @click="$emit('save_chart')"
               class="e-ml-2 e-btn e-btn-outline-secondary \"
             >
-              <font-awesome-icon icon="save"></font-awesome-icon>
+              <font-awesome-icon icon="save" />
             </button>
           </div>
         </div>

@@ -94,13 +94,14 @@
   import { chart_create_meta } from '../src/components/easieboard_items/easie_chart/meta/create_meta.js';
   import { indicator_create_meta } from '../src/components/easieboard_items/easie_indicator/meta/create_meta.js';
   import { select_create_meta } from '../src/components/easieboard_items/board_select/meta/create_meta.js';
-
   import { tree_select_create_meta } from '../src/components/easieboard_items/board_tree_select/meta/create_meta.js';
+  import { viny_chart_create_meta } from '../src/components/easieboard_items/viny_chart/meta/create_meta.js'
 
   import easieIndicator from '../src/components/easieboard_items/easie_indicator/easie_indicator.vue';
   import easieChart from '../src/components/easieboard_items/easie_chart/easie_chart.vue';
   import boardSelect from '../src/components/easieboard_items/board_select/board_select.vue';
   import boardTreeSelect from '../src/components/easieboard_items/board_tree_select/board_tree_select.vue';
+  import vinyChart from '../src/components/easieboard_items/viny_chart/viny_chart.vue'
 
   import itemDataStructure from '../src/components/item_structure/item_data_structure.vue';
   // import new_component from './components/new_component/new_component.vue';
@@ -126,7 +127,8 @@
       easieIndicator,
       boardSelect,
       easieChart,
-      boardTreeSelect
+      boardTreeSelect,
+      vinyChart,
       // 'new-component': new_component,
     },
     data(){
@@ -152,7 +154,7 @@
           false: 'e-btn e-mr-1 e-btn-outline-secondary hover-btn-easie'
         },
         creation_order: [
-          'indicator', 'chart', 'select', 'tree_select'
+          'indicator', 'chart', 'select', 'tree_select', 'viny_chart'
         ],
         creation_data: {
           chart: {
@@ -172,7 +174,15 @@
             }
           },
           select: { ...select_create_meta},
-          tree_select: {...tree_select_create_meta }
+          tree_select: {...tree_select_create_meta },
+          viny_chart: {
+            ...viny_chart_create_meta,
+            values_function: (vm, loading, call_back) => {
+              loading.hide()
+              this.new_group_list_values_structure();
+              call_back({error: false, data: { group_list_values: this.group_list_values}});
+            }
+          },
         }
       }
     },

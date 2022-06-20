@@ -1,6 +1,6 @@
-export const chart_create_meta = {
-  label: 'Gráfico',
-  component: 'easie-chart',
+export const viny_chart_create_meta = {
+  label: 'VinyChart',
+  component: 'viny-chart',
   div_style: 'min-height:550px; max-height:550px;',
   values_function: (vm, loading, call_back) => {
     vm.axios.post('/get_group_list_values', {
