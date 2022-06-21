@@ -49,7 +49,7 @@
       v-if="disp_ref.easie_tools_modal"
       @close="close_modal"
       v-model="chart_meta"
-    ></easie-item-tools>
+    />
   </div>
 </template>
 <script>

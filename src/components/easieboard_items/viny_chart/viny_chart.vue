@@ -152,13 +152,7 @@ export default {
         ...this.item_meta['title_style'],
       };
 
-      const toolbox = default_toolbox;
-      toolbox['feature']['saveAsImage']['name'] = [
-        'easie',
-        this.item_meta['chart_title'],
-        'img',
-      ].join('_');
-      this.echarts_json['toolbox'] = toolbox;
+      this.mount_toolbox();
 
       this.echarts_json['tooltip']['show'] = this.item_meta['t_tooltip']['show'];
       this.echarts_json['tooltip']['axisPointer']['label']['show'] =
@@ -169,23 +163,8 @@ export default {
         ...this.item_meta['legend_style'],
       };
 
-      const axis = this.item_meta['inverted_axis']
-        ? ['xAxis', 'yAxis']
-        : ['yAxis', 'xAxis'];
-      this.echarts_json[axis[0]] = [
-        {
-          type: 'value',
-          ...this.item_meta['value_axis_style'],
-        },
-      ];
-      this.echarts_json[axis[1]] = [
-        {
-          type: 'category',
-          boundaryGap: this.item_meta['chart_type'] == 'bar',
-          data: idx_groups,
-          ...this.item_meta['category_axis_style'],
-        },
-      ];
+      this.mount_axis(idx_groups);
+
       this.echarts_json = {
         ...this.echarts_json,
         ...this.item_meta.extra,
@@ -242,6 +221,120 @@ export default {
       }
       return [idx_groups, idx_subgroups];
     },
+    mount_axis(idx_groups) {
+      const axis = this.item_meta['inverted_axis']
+        ? ['xAxis', 'yAxis']
+        : ['yAxis', 'xAxis'];
+      this.echarts_json[axis[0]] = [
+        {
+          type: 'value',
+          ...this.item_meta['value_axis_style'],
+        },
+      ];
+      this.echarts_json[axis[1]] = [
+        {
+          type: 'category',
+          boundaryGap: this.item_meta['chart_type'] == 'bar',
+          data: idx_groups,
+          ...this.item_meta['category_axis_style'],
+        },
+      ];
+    },
+    mount_toolbox() {
+      const toolbox = default_toolbox;
+      toolbox['feature']['saveAsImage']['name'] = [
+        'easie',
+        this.item_meta['chart_title'],
+        'img',
+      ].join('_');
+      this.echarts_json['toolbox'] = toolbox;
+    },
+    mount_pie_chart_json() {
+      this.echarts_json = { ...default_echarts_json, ...this.item_meta.extra };
+
+      const [idx_groups, idx_subgroups] = this.split_idx_groups_subgroups();
+      const centers = [];
+      for (const group in idx_groups) {
+        const center = this.strp([this.i_pos(group, idx_groups.length), 50]);
+        centers.push(center);
+      }
+
+      this.mount_pie_group_titles(idx_groups, centers);
+
+      this.mount_pie_series_data(idx_groups, idx_subgroups, centers);
+
+      this.mount_toolbox();
+
+      this.echarts_json['tooltip'] = {
+        show: this.item_meta['t_tooltip']['show'],
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)',
+      };
+
+      this.echarts_json['legend'] = {
+        ...this.item_meta['legend_style'],
+      };
+    },
+    i_pos(i, g_len) {
+      return parseInt(100 / g_len / 2 + i * (100 / g_len));
+    },
+    strp(numbers) {
+      return [numbers[0].toString() + '%', numbers[1].toString() + '%'];
+    },
+    mount_pie_group_titles(idx_groups, centers) {
+      this.echarts_json['title'] = [];
+      const title = {
+        text: this.item_meta['chart_title'],
+        subtext: this.item_meta['chart_subtitle'],
+        ...this.item_meta['title_style'],
+      };
+      this.echarts_json['title'].push(title);
+
+      for (const group in idx_groups) {
+        const group_name = idx_groups[group];
+        const group_title = {
+          text: group_name,
+          left: centers[group][0],
+          top: '74%',
+          textAlign: 'center',
+        };
+        this.echarts_json['title'].push(group_title);
+      }
+    },
+    mount_pie_series_data(idx_groups, idx_subgroups, centers) {
+      this.echarts_json['series'] = [];
+      for (const group in idx_groups) {
+        const group_name = idx_groups[group];
+        let item_data = {};
+        const item_group = {
+          name: group_name,
+          type: this.item_meta['chart_type'],
+          center: centers[group],
+          radius: [70, 90],
+          data: [],
+        };
+        for (const subgroup in idx_subgroups) {
+          const data_name = idx_subgroups[subgroup];
+          const value_data = this.group_list_values[group_name][data_name];
+          item_data = {
+            name: data_name,
+            value: value_data,
+            ...this.$get_json_key(
+              [group_name, data_name, 'data'],
+              this.easiedata_items,
+              {}
+            ),
+            ...this.$get_json_key(
+              [group_name, data_name, 'series'],
+              this.easiedata_items,
+              {}
+            ),
+          };
+          item_group['data'].push(item_data);
+        }
+        this.echarts_json['series'].push(item_group);
+      }
+    },
     get_group_list_values() {
       const loading = this.$loading.show({
         container: this.$el,
@@ -268,8 +361,7 @@ export default {
     apply_group_list_values() {
       this.load_group_list_defaults();
       if (this.item_meta['chart_type'] == 'pie') {
-        // this.mount_pie_chart_json();
-        console.log('pie');
+        this.mount_pie_chart_json();
       } else {
         this.mount_echarts_json();
       }
