@@ -1,6 +1,6 @@
 {
   "name": "vueasieboard",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/easieboard.umd.js",
   "module": "dist/easieboard.esm.js",
   "unpkg": "dist/easieboard.min.js",
